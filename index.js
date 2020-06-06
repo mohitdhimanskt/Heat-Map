@@ -40,6 +40,18 @@ function callback(error, data) {
     data.monthlyVariance.forEach(function (val) {
       val.month -= 1;
     });
+    var section = d3.select("body").
+    append("section");
+
+ 
+    var heading = section.append("heading");
+    heading.append("h1").
+    attr('id', 'title').
+    text("Monthly Global Land-Surface Temperature");
+    heading.append("h3").
+    attr('id', 'description').
+    html(data.monthlyVariance[0].year + " - " + data.monthlyVariance[data.monthlyVariance.length - 1].year + ": base temperature " + data.baseTemperature + "&#8451;");
+
   }
 }
    
