@@ -71,7 +71,7 @@ function callback(error, data) {
       height: height + padding.top + padding.bottom })
       call(tip);
 
-     
+        
       var yScale = d3.scale.ordinal().
       domain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) //months
       .rangeRoundBands([0, height], 0, 0);
@@ -85,6 +85,17 @@ function callback(error, data) {
       }).
       orient("left").
       tickSize(10, 1);
+
+      svg.append("g").
+      classed("y-axis", true).
+      attr("id", "y-axis").
+      attr("transform", "translate(" + padding.left + "," + padding.top + ")").
+      call(yAxis).
+      append("text").
+      text("Months").
+      style("text-anchor", "middle").
+      attr("transform", "translate(" + -7 * fontSize + "," + height / 2 + ")" + "rotate(-90)");
+  
     }
 
 }
