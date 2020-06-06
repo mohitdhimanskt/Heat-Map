@@ -95,7 +95,26 @@ function callback(error, data) {
       text("Months").
       style("text-anchor", "middle").
       attr("transform", "translate(" + -7 * fontSize + "," + height / 2 + ")" + "rotate(-90)");
-  
+
+        //xaxis
+
+    //ordinal scale
+    var xScale = d3.scale.ordinal().
+    domain(data.monthlyVariance.map(function (val) {return val.year;})).
+    rangeRoundBands([0, width], 0, 0);
+    var xAxis = d3.svg.axis().
+    scale(xScale).
+    tickValues(xScale.domain().filter(function (year) {
+      //set ticks to years divisible by 10
+      return year % 10 === 0;
+    })).
+    tickFormat(function (year) {
+      var date = new Date(0);
+      date.setUTCFullYear(year);
+      return d3.time.format.utc("%Y")(date);
+    }).
+    orient("bottom").
+    tickSize(10, 1);
     }
 
 }
