@@ -163,7 +163,72 @@ function callback(error, data) {
     classed("legend", true).
     attr("id", "legend").
     attr("transform", "translate(" + padding.left + "," + (padding.top + height + padding.bottom - 2 * legendHeight) + ")");  
-}
+    legend.append("g").
+    selectAll("rect").
+    data(legendThreshold.range().map(function (color) {
+      var d = legendThreshold.invertExtent(color);
+      if (d[0] == null) d[0] = legendX.domain()[0];
+      if (d[1] == null) d[1] = legendX.domain()[1];
+      return d;
+    })).
+    enter().append("rect").
+    style("fill", function (d, i) {return legendThreshold(d[0]);}).
+    attr({
+      x: function (d, i) {return legendX(d[0]);},
+      y: 0,
+      width: function (d, i) {return legendX(d[1]) - legendX(d[0]);},
+      height: legendHeight });
 
-}
-   
+
+    legend.append("g").
+    attr("transform", "translate(" + 0 + "," + legendHeight + ")").
+    call(legendXAxis);
+     //map
+     svg.append("g").
+     classed("map", true).
+     attr("transform", "translate(" + padding.left + "," + padding.top + ")").
+     selectAll("rect").
+     data(data.monthlyVariance).
+     enter().append("rect").
+     attr('class', 'cell').
+     attr('data-month', function (d) {
+       return d.month;
+     }).
+     attr('data-year', function (d) {
+       return d.year;
+     }).
+     attr('data-temp', function (d) {
+       return data.baseTemperature + d.variance;
+     }).
+     attr({
+       x: function (d, i) {
+         return xScale(d.year);
+       },
+       y: function (d, i) {
+         return yScale(d.month);
+       },
+       width: function (d, i) {
+         return xScale.rangeBand(d.year);
+       },
+       height: function (d, i) {
+         return yScale.rangeBand(d.month);
+       } }).
+ 
+     attr("fill", function (d, i) {
+       return legendThreshold(data.baseTemperature + d.variance);
+     }).
+     on("mouseover", function (d) {
+       var date = new Date(d.year, d.month);
+       var str = "<span class='date'>" + d3.time.format("%Y - %B")(date) + "</span>" + "<br />" +
+       "<span class='temperature'>" + d3.format(".1f")(data.baseTemperature + d.variance) + "&#8451;" + "</span>" + "<br />" +
+       "<span class='variance'>" + d3.format("+.1f")(d.variance) + "&#8451;" + "</span>";
+       tip.attr("data-year", d.year);
+       tip.show(str);
+     }).
+     on("mouseout", tip.hide);
+ 
+   } else {
+     console.log("Error loading data from server.");
+   }
+ }
+ 
