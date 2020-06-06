@@ -52,6 +52,23 @@ function callback(error, data) {
     attr('id', 'description').
     html(data.monthlyVariance[0].year + " - " + data.monthlyVariance[data.monthlyVariance.length - 1].year + ": base temperature " + data.baseTemperature + "&#8451;");
 
-  }
+    var fontSize = 16;
+    var width = 5 * Math.ceil(data.monthlyVariance.length / 12); //1500;
+    var height = 33 * 12; //400;
+    var padding = { left: 9 * fontSize, right: 9 * fontSize, top: 1 * fontSize, bottom: 8 * fontSize };
+    var tip = d3.tip().
+    attr("class", "d3-tip").
+    attr("id", "tooltip").
+    html(function (d) {
+      return d;
+    }).
+    direction("n").
+    offset([-10, 0]);
+
+    var svg = section.append("svg").
+    attr({
+      width: width + padding.left + padding.right,
+      height: height + padding.top + padding.bottom })
+    }
 }
    
