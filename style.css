@@ -28,3 +28,6 @@ body .d3-tip {
   section .y-axis text, section .x-axis text, section .legend text {
     stroke-width: 0;
   }
+  section .map {
+    stroke-width: 0;
+  }
