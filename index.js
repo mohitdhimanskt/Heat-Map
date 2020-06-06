@@ -136,7 +136,34 @@ function callback(error, data) {
     });
     var minTemp = data.baseTemperature + Math.min.apply(null, variance);
     var maxTemp = data.baseTemperature + Math.max.apply(null, variance);
-    }
+    var legendThreshold = d3.scale.threshold().
+    domain(function (min, max, count) {
+      var array = [];
+      var step = (max - min) / count;
+      var base = min;
+      for (var i = 1; i < count; i++) {
+        array.push(base + i * step);
+      }
+      return array;
+    }(minTemp, maxTemp, legendColors.length)).
+    range(legendColors);
+
+    var legendX = d3.scale.linear().
+    domain([minTemp, maxTemp]).
+    range([0, legendWidth]);
+
+    var legendXAxis = d3.svg.axis().
+    scale(legendX).
+    orient("bottom").
+    tickSize(10, 0).
+    tickValues(legendThreshold.domain()).
+    tickFormat(d3.format(".1f"));
+
+    var legend = svg.append("g").
+    classed("legend", true).
+    attr("id", "legend").
+    attr("transform", "translate(" + padding.left + "," + (padding.top + height + padding.bottom - 2 * legendHeight) + ")");  
+}
 
 }
    
