@@ -125,7 +125,17 @@ function callback(error, data) {
     text("Years").
     style("text-anchor", "middle").
     attr("transform", "translate(" + width / 2 + "," + 3 * fontSize + ")");
+ 
+  
+    var legendColors = colorbrewer.RdYlBu[11].reverse();
+    var legendWidth = 400;
+    var legendHeight = 300 / legendColors.length;
 
+    var variance = data.monthlyVariance.map(function (val) {
+      return val.variance;
+    });
+    var minTemp = data.baseTemperature + Math.min.apply(null, variance);
+    var maxTemp = data.baseTemperature + Math.max.apply(null, variance);
     }
 
 }
