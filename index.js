@@ -69,6 +69,23 @@ function callback(error, data) {
     attr({
       width: width + padding.left + padding.right,
       height: height + padding.top + padding.bottom })
+      call(tip);
+
+     
+      var yScale = d3.scale.ordinal().
+      domain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) //months
+      .rangeRoundBands([0, height], 0, 0);
+      var yAxis = d3.svg.axis().
+      scale(yScale).
+      tickValues(yScale.domain()).
+      tickFormat(function (month) {
+        var date = new Date(0);
+        date.setUTCMonth(month);
+        return d3.time.format.utc("%B")(date);
+      }).
+      orient("left").
+      tickSize(10, 1);
     }
+
 }
    
