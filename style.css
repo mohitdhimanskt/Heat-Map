@@ -31,3 +31,6 @@ body .d3-tip {
   section .map {
     stroke-width: 0;
   }
+  section .map rect:hover {
+    stroke-width: 2;
+  }
